@@ -1,0 +1,15 @@
+# Docker build optimization - ignore unnecessary files
+.git
+.gitignore
+node_modules
+npm-debug.log
+.env
+.env.local
+.DS_Store
+.vscode
+.idea
+tests
+README.md
+.github
+kubernetes
+postman

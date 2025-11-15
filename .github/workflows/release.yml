@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get tag version
+      id: tag
+      run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Build Changelog
+      id: changelog
+      run: |
+        git log --pretty=format:"%h %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD > CHANGELOG_ENTRY.md || echo "Initial release" > CHANGELOG_ENTRY.md
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.version }}
+        release_name: Release ${{ steps.tag.outputs.version }}
+        body_path: CHANGELOG_ENTRY.md
+        draft: false
+        prerelease: false

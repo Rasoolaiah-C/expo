@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0-alpine
+    container_name: experiment-mongodb-prod
+    environment:
+      MONGO_INITDB_DATABASE: experiment-db
+    volumes:
+      - mongodb_prod_data:/data/db
+    networks:
+      - experiment-network-prod
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: experiment-api-prod
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/experiment-db
+      LOG_LEVEL: info
+      API_VERSION: v1
+    depends_on:
+      - mongodb
+    networks:
+      - experiment-network-prod
+    restart: always
+
+volumes:
+  mongodb_prod_data:
+
+networks:
+  experiment-network-prod:
+    driver: bridge

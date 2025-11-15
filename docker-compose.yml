@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0-alpine
+    container_name: experiment-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: experiment-db
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - experiment-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: experiment-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/experiment-db
+      LOG_LEVEL: debug
+      API_VERSION: v1
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3001
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - experiment-network
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+
+networks:
+  experiment-network:
+    driver: bridge

@@ -1,0 +1,41 @@
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to rollback'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Kubernetes
+      uses: azure/setup-kubectl@v3
+
+    - name: Configure kubectl
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      run: |
+        mkdir -p $HOME/.kube
+        echo "$KUBE_CONFIG" | base64 --decode > $HOME/.kube/config
+
+    - name: Rollback deployment
+      run: |
+        echo "Rolling back experiment-api to previous revision..."
+        kubectl rollout undo deployment/experiment-api -n experiment-backend
+        kubectl rollout status deployment/experiment-api -n experiment-backend --timeout=5m
+
+    - name: Verify rollback
+      run: |
+        kubectl get pods -n experiment-backend
+        kubectl describe deployment experiment-api -n experiment-backend

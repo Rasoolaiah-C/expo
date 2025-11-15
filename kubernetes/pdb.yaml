@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: experiment-api-pdb
+  namespace: experiment-backend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: experiment-api

@@ -1,0 +1,21 @@
+{
+  "id": "experiment-backend-env-prod",
+  "name": "Experiment Backend - Production",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "https://api.experiment-backend.com",
+      "enabled": true
+    },
+    {
+      "key": "api_version",
+      "value": "v1",
+      "enabled": true
+    },
+    {
+      "key": "experiment_id",
+      "value": "",
+      "enabled": true
+    }
+  ]
+}

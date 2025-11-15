@@ -1,0 +1,272 @@
+{
+  "info": {
+    "name": "Experiment Backend API",
+    "description": "Full CRUD operations for experiment data management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health", "health"]
+            },
+            "description": "Check API health status"
+          }
+        },
+        {
+          "name": "API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health/info",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health", "info"]
+            },
+            "description": "Get API information and version"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Experiments",
+      "item": [
+        {
+          "name": "Create Experiment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Machine Learning Model Validation\",\n  \"description\": \"Testing and validating ML models for production deployment\",\n  \"category\": \"validation\",\n  \"startDate\": \"2024-01-15T00:00:00Z\",\n  \"endDate\": \"2024-03-15T00:00:00Z\",\n  \"researcher\": \"Dr. Sarah Johnson\",\n  \"budget\": 50000,\n  \"team\": [\n    {\n      \"name\": \"Alice Smith\",\n      \"role\": \"Data Scientist\",\n      \"email\": \"alice@example.com\"\n    },\n    {\n      \"name\": \"Bob Wilson\",\n      \"role\": \"ML Engineer\",\n      \"email\": \"bob@example.com\"\n    }\n  ],\n  \"objectives\": [\n    \"Validate model accuracy\",\n    \"Test edge cases\",\n    \"Performance benchmarking\"\n  ],\n  \"methodology\": \"Cross-validation with k-fold\",\n  \"expectedOutcomes\": \"Production-ready model with >95% accuracy\",\n  \"priority\": \"high\",\n  \"tags\": [\"ml\", \"validation\", \"production\"],\n  \"notes\": \"Critical experiment for Q1 product launch\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"]
+            },
+            "description": "Create a new experiment"
+          }
+        },
+        {
+          "name": "Get All Experiments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments?page=1&limit=10&sortBy=-createdAt",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "-createdAt"
+                }
+              ]
+            },
+            "description": "Get all experiments with pagination"
+          }
+        },
+        {
+          "name": "Filter by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments?status=ongoing",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ongoing"
+                }
+              ]
+            },
+            "description": "Get experiments filtered by status"
+          }
+        },
+        {
+          "name": "Filter by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments?category=research",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "research"
+                }
+              ]
+            },
+            "description": "Get experiments filtered by category"
+          }
+        },
+        {
+          "name": "Get Experiment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments/{{experiment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments", "{{experiment_id}}"]
+            },
+            "description": "Get a specific experiment by ID"
+          }
+        },
+        {
+          "name": "Update Experiment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\",\n  \"title\": \"Machine Learning Model Validation - Updated\",\n  \"results\": {\n    \"status\": \"success\",\n    \"findings\": \"Model achieved 96.5% accuracy on test set\",\n    \"metrics\": {\n      \"accuracy\": 0.965,\n      \"precision\": 0.968,\n      \"recall\": 0.962,\n      \"f1_score\": 0.965\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments/{{experiment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments", "{{experiment_id}}"]
+            },
+            "description": "Update an experiment"
+          }
+        },
+        {
+          "name": "Delete Experiment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments/{{experiment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments", "{{experiment_id}}"]
+            },
+            "description": "Delete an experiment"
+          }
+        },
+        {
+          "name": "Get Experiment Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments/stats/overview",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments", "stats", "overview"]
+            },
+            "description": "Get experiment statistics grouped by status and category"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Create with Missing Required Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Missing title\",\n  \"category\": \"research\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"]
+            },
+            "description": "Expected to fail - demonstrates validation"
+          }
+        },
+        {
+          "name": "Get Non-existent Experiment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments/507f1f77bcf86cd799439011",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Expected 404 - demonstrates error handling"
+          }
+        },
+        {
+          "name": "Invalid Date Range",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Invalid Dates\",\n  \"description\": \"End date before start date\",\n  \"category\": \"research\",\n  \"startDate\": \"2024-12-31T00:00:00Z\",\n  \"endDate\": \"2024-01-01T00:00:00Z\",\n  \"researcher\": \"Test User\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/experiments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "experiments"]
+            },
+            "description": "Expected to fail - demonstrates validation of date range"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "api_version",
+      "value": "v1",
+      "type": "string"
+    },
+    {
+      "key": "experiment_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
