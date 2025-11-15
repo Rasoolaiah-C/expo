@@ -1,11 +1,7 @@
-#!/bin/bash
+// Database seeding script
+// Run: npm run seed or node scripts/seed.js
 
-# Database seeding script
-# Run: npm run seed or node scripts/seed.js
-
-require('../src/models/Experiment');
 const mongoose = require('mongoose');
-
 const Experiment = require('../src/models/Experiment');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/experiment-db';
